@@ -12,3 +12,5 @@ function println (string $value): void
 
 println(generatePassword(5));
 println(generatePassword(30));
+println(generatePassword(30, useUppercase: false, useDigits: false));
+println(generatePassword(70, useSpecial: true));
