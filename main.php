@@ -10,7 +10,8 @@ function println (string $value): void
     echo $value . PHP_EOL;
 }
 
-println(generatePassword(5));
-println(generatePassword(30));
-println(generatePassword(30, useUppercase: false, useDigits: false));
-println(generatePassword(70, useSpecial: true));
+println(generatePassword(8, 1));
+println(generatePassword(12, 123));
+println(generatePassword(12, 123, useSpecial: true));
+println(generatePassword(8, 1, useUppercase: false, useDigits: false));
+println(generatePassword(-3, 42));

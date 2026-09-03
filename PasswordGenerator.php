@@ -7,142 +7,40 @@ const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const DIGITS = '0123456789';
 const SPECIAL = '!@#$%^&*';
 
-function generatePassword(
+// Генерация псевдо-случайного числа
+function nextRandom(int $number): int
+{
+    return (16807 * $number) % 2147483647;
+}
+
+// Основная функция генерации пароля
+function generatePassword (
     int $length, 
+    int $seed, 
     bool $useUppercase = true, 
-    bool $useDigits = true,
+    bool $useDigits = true, 
     bool $useSpecial = false
 ): string
 {
-    $alphabet = LOWERCASE;
-    $upperAlphabet = UPPERCASE;
-    $someDigits = DIGITS;
-    $specials = SPECIAL;
+    if ($length <= 0) {
+        return '';
+    }
 
-    $len = strlen(LOWERCASE);
-    $upperLen = strlen(UPPERCASE);
-    $digitsLen = strlen(DIGITS);
-    $specialsLen = strlen(SPECIAL);
+    // Проверка на доступные параметры и сбор общего набора символов
+    $availableSet = LOWERCASE;
+    $availableSet .= $useUppercase ? UPPERCASE : '';
+    $availableSet .= $useDigits ? DIGITS : '';
+    $availableSet .= $useSpecial ? SPECIAL : '';
 
+    $len = strlen($availableSet);
+
+    $current = $seed;
     $result = '';
-    
-    // Счетчики для каждого набора символов
-    $lowerCounter = 0;
-    $upperCounter = 0;
-    $digitCounter = 0;
-    $specialCounter = 0;
 
     for ($i = 0; $i < $length; $i++) {
-        // Все три параметра включены
-        if ($useUppercase && $useDigits && $useSpecial) {
-            if ($i < $len) {
-                $index = $lowerCounter % $len;
-                $result .= $alphabet[$index];
-                $lowerCounter++;
-            } elseif ($i < $len + $upperLen) {
-                $index = $upperCounter % $upperLen;
-                $result .= $upperAlphabet[$index];
-                $upperCounter++;
-            } elseif ($i < $len + $upperLen + $digitsLen) {
-                $index = $digitCounter % $digitsLen;
-                $result .= $someDigits[$index];
-                $digitCounter++;
-            } else {
-                $index = $specialCounter % $specialsLen;
-                $result .= $specials[$index];
-                $specialCounter++;
-            }
-        }
-        // Только uppercase и digits (без special)
-        elseif ($useUppercase && $useDigits) {
-            if ($i < $len) {
-                $index = $lowerCounter % $len;
-                $result .= $alphabet[$index];
-                $lowerCounter++;
-            } elseif ($i < $len + $upperLen) {
-                $index = $upperCounter % $upperLen;
-                $result .= $upperAlphabet[$index];
-                $upperCounter++;
-            } else {
-                $index = $digitCounter % $digitsLen;
-                $result .= $someDigits[$index];
-                $digitCounter++;
-            }
-        }
-        // Только digits
-        elseif (!$useUppercase && $useDigits) {
-            if ($i < $len) {
-                $index = $lowerCounter % $len;
-                $result .= $alphabet[$index];
-                $lowerCounter++;
-            } else {
-                $index = $digitCounter % $digitsLen;
-                $result .= $someDigits[$index];
-                $digitCounter++;
-            }
-        }
-        // Только uppercase
-        elseif ($useUppercase && !$useDigits) {
-            if ($i < $len) {
-                $index = $lowerCounter % $len;
-                $result .= $alphabet[$index];
-                $lowerCounter++;
-            } else {
-                $index = $upperCounter % $upperLen;
-                $result .= $upperAlphabet[$index];
-                $upperCounter++;
-            }
-        }
-        // Ничего не включено (только lowercase)
-        elseif (!$useUppercase && !$useDigits) {
-            $index = $lowerCounter % $len;
-            $result .= $alphabet[$index];
-            $lowerCounter++;
-        }
-        // Uppercase и Special (без digits)
-        elseif ($useUppercase && !$useDigits && $useSpecial) {
-            if ($i < $len) {
-                $index = $lowerCounter % $len;
-                $result .= $alphabet[$index];
-                $lowerCounter++;
-            } elseif ($i < $len + $upperLen) {
-                $index = $upperCounter % $upperLen;
-                $result .= $upperAlphabet[$index];
-                $upperCounter++;
-            } else {
-                $index = $specialCounter % $specialsLen;
-                $result .= $specials[$index];
-                $specialCounter++;
-            }
-        }
-        // Digits и Special (без uppercase)
-        elseif (!$useUppercase && $useDigits && $useSpecial) {
-            if ($i < $len) {
-                $index = $lowerCounter % $len;
-                $result .= $alphabet[$index];
-                $lowerCounter++;
-            } elseif ($i < $len + $digitsLen) {
-                $index = $digitCounter % $digitsLen;
-                $result .= $someDigits[$index];
-                $digitCounter++;
-            } else {
-                $index = $specialCounter % $specialsLen;
-                $result .= $specials[$index];
-                $specialCounter++;
-            }
-        }
-        // Только Special
-        elseif (!$useUppercase && !$useDigits && $useSpecial) {
-            if ($i < $len) {
-                $index = $lowerCounter % $len;
-                $result .= $alphabet[$index];
-                $lowerCounter++;
-            } else {
-                $index = $specialCounter % $specialsLen;
-                $result .= $specials[$index];
-                $specialCounter++;
-            }
-        }
+        $current = nextRandom($current);
+        $index = $current % $len;
+        $result .= $availableSet[$index];
     }
 
     return $result;
