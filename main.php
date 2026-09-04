@@ -5,20 +5,18 @@ require_once __DIR__ . '/PasswordGenerator.php';
 use function hexlet\code\generatePassword;
 use function hexlet\code\checkPassword;
 
-// Помощник для переноса строки при неоднократном вызове функции
+// Helper for line wrapping during repeated function calls
 function println (string $value): void
 {
     echo $value . PHP_EOL;
 }
 
-println(generatePassword(8, 1));
-println(generatePassword(12, 123));
-println(generatePassword(12, 123, useSpecial: true));
-println(generatePassword(8, 1, useUppercase: false, useDigits: false));
-println(generatePassword(-3, 42));
+println('== Генерация паролей ==');
+println('буквы и цифры:    ' . generatePassword(12, 123));
+println('со спецсимволами: ' . generatePassword(16, 7, useSpecial: true));
 
-println(checkPassword('abc'));
-println(checkPassword('abcdefgh'));
-println(checkPassword('abcdef1234'));
-println(checkPassword('Abcdef1234'));
-println(checkPassword('Abcdef123!'));
+println('');
+println('== Проверка надёжности ==');
+println('abc        -> ' . checkPassword('abc'));
+println('abcdef1234 -> ' . checkPassword('abcdef1234'));
+println('Abcdef123! -> ' . checkPassword('Abcdef123!'));

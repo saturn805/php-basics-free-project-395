@@ -33,7 +33,7 @@ function generatePassword (
         return '';
     }
 
-    // Проверка на доступные параметры и сбор общего набора символов
+    // Checking for available parameters and collecting a common set of symbols.
     $availableSet = LOWERCASE;
     $availableSet .= $useUppercase ? UPPERCASE : '';
     $availableSet .= $useDigits ? DIGITS : '';
