@@ -158,7 +158,7 @@ function getVerdict(int $estimation): string
     return match (true) {
         $estimation <= 2 => "Слабый пароль (оценка {$estimation} из 5)",
         $estimation === 3 => "Средний пароль (оценка {$estimation} из 5)",
-        $estimation === 4 => "Надежный пароль (оценка {$estimation} из 5)",
-        $estimation === 5 => "Очень надежный пароль (оценка {$estimation} из 5)",
+        $estimation === 4 => "Надёжный пароль (оценка {$estimation} из 5)",
+        $estimation === 5 => "Очень надёжный пароль (оценка {$estimation} из 5)",
     };
 }
